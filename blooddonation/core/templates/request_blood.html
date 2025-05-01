@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<br><br><br><br>
+<div class="container mt-5">
+    <h2 class="mb-4 text-danger">Request Blood</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" class="p-4 bg-light rounded shadow" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="blood_group" class="form-label">Blood Group <span class="text-danger">*</span></label>
+                {{ form.blood_group }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="urgency" class="form-label">Urgency Level <span class="text-danger">*</span></label>
+                <select name="urgency" class="form-select" id="urgency" required>
+                    <option value="">Select Urgency Level</option>
+                    <option value="critical" class="text-danger">Critical - Immediate</option>
+                    <option value="high" class="text-warning">High - Within 24 hours</option>
+                    <option value="medium" class="text-info">Medium - Within 3 days</option>
+                    <option value="low" class="text-success">Low - Within a week</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select an urgency level
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="hospital_name" class="form-label">Hospital Name <span class="text-danger">*</span></label>
+                {{ form.hospital_name}}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="hospital_address" class="form-label">Hospital Address <span class="text-danger">*</span></label>
+                {{ form.hospital_address }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="contact_name" class="form-label">Contact Name <span class="text-danger">*</span></label>
+                {{ form.contact_name }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="contact_number" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                {{ form.contact_number }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="additional_notes" class="form-label">Additional Notes</label>
+            {{ form.additional_notes}}
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-danger px-5">Submit Request</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

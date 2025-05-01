@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<br><br><br><br>
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Manage Blood Donations</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Donor Name</th>
+                            <th>Blood Group</th>
+                            <th>Amount (ml)</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donation in donations %}
+                        <tr>
+                            <td>{{ donation.donor.user.get_full_name }}</td>
+                            <td><span class="badge bg-danger">{{ donation.blood_group }}</span></td>
+                            <td>{{ donation.amount_ml }} ml</td>
+                            <td>{{ donation.donation_date|date:"M d, Y" }}</td>
+                            <td>
+                                <span class="badge {% if donation.status == 'pending' %}bg-warning
+                                    {% elif donation.status == 'approved' %}bg-success
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ donation.status|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-info" data-bs-toggle="modal" 
+                                        data-bs-target="#detailsModal{{ donation.id }}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-success" onclick="updateStatus('{{ donation.id }}', 'approved')">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="updateStatus('{{ donation.id }}', 'rejected')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.badge {
+    font-size: 0.9em;
+    padding: 0.5em 0.8em;
+}
+.btn-sm {
+    margin: 0 2px;
+}
+.table td {
+    vertical-align: middle;
+}
+</style>
+
+<script>
+function updateStatus(donationId, status) {
+    if (confirm('Are you sure you want to ' + status + ' this donation?')) {
+        fetch(`/update-donation-status/${donationId}/${status}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error updating status');
+            }
+        });
+    }
+}
+
+// Add filters
+document.addEventListener('DOMContentLoaded', function() {
+    const statusFilter = document.getElementById('statusFilter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', function() {
+            const status = this.value;
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const statusCell = row.querySelector('td:nth-child(5)');
+                if (status === 'all' || statusCell.textContent.trim().toLowerCase() === status) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

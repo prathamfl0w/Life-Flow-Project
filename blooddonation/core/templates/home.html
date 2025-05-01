@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<br><br>
+
+<header class="hero-section text-center text-white" >
+    
+    <div class="container-fluid" 
+        style="background: url('{% static 'images/background.jpg' %}') no-repeat 120% center; 
+               background-size: 75% 100%; height: 100vh; padding: 20px; border-radius: 10px; margin-top: 100px;">
+        <br><br> 
+        <h1 class="display-3 font-weight-bold" 
+            style="color: #ff0018; transform: translateX(-20%);">
+            <span style="color: cyan;">Donate</span> 
+            <span style="color: #ff0018;">Blood</span>,
+            <br>
+            <span style="color: cyan;">Save <span style="color: #ff0018;">Lives.</span></span>
+        </h1> 
+
+        <div style="transform: translateX(-15%); margin-top: 40px;">
+            {% if user.is_authenticated %}
+            <p class="font-weight-bold" style="color: #dc3545; font-size: 1.2rem;">
+                Welcome <span style="color: #05c0f9;">{{ user.username }}!</span>
+            </p>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-danger btn-lg mt-3">Become a Donor!</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<section id="why-donate" class="container my-5">
+    <h2 class="text-center mb-5 font-weight-bold" style="color: #ff0018;">Why Donate Blood?</h2>
+    
+    <div class="row align-items-center">
+        <!-- Left Side: Image -->
+        <div class="col-md-6">
+            <img src="{% static 'images/blood donation.jpg' %}" alt="Blood Donation" class="img-fluid rounded shadow-lg animate-left">
+        </div>
+
+        <!-- Right Side: Reasons with Icons -->
+        <div class="col-md-6">
+            <div class="reason animate-right">
+                <img src="{% static 'images/health.png' %}" class="icon" alt="Health Benefits">
+                <div>
+                    <h4 class="text-danger">Health Benefits</h4>
+                    <p1>Donating blood helps improve heart health, reduces harmful iron levels, and stimulates new blood cell production.</p1>
+                </div>
+            </div>
+
+            <div class="reason animate-right">
+                <img src="{% static 'images/lives.png' %}" class="icon" alt="Save Lives">
+                <div>
+                    <h4 class="text-danger">Save Lives</h4>
+                    <p1>One donation can save up to three lives! Your blood can help accident victims, cancer patients, and those in need of surgeries.</p1>
+                </div>
+            </div>
+
+            <div class="reason animate-right">
+                <img src="{% static 'images/comunity.png' %}" class="icon" alt="Community Support">
+                <div>
+                    <h4 class="text-danger">Community Support</h4>
+                    <p1>By donating blood, you contribute to your community and ensure hospitals have enough supply for those in need.</p1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="container my-5">
+    <h2 class="text-center mb-5">About Our Team</h2>
+    <div class="row g-4">
+        {% comment "Team members" %}
+        {% for member in team %}
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm animate-right">
+                <img src="{% static member.image %}" class="card-img-top rounded-circle profile-pic mx-auto mt-3" alt="{{ member.name }}">
+                <div class="card-body">
+                    <h3 class="card-title">{{ member.name }} - {{ member.role }}</h3>
+                    <p class="card-text">{{ member.bio }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endcomment %}
+
+        <!-- Static version -->
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm animate-right">
+                <img src="{% static 'images/vvikash.jpg' %}" class="card-img-top rounded-circle profile-pic mx-auto mt-3" alt="Vikash Singh">
+                <div class="card-body">
+                    <h3 class="card-title">Vikash Singh - Group Leader</h3>
+                    <p class="card-text">AI enthusiast currently studying CSE-AI at Chitkara University. Passionate about real-world solutions and leadership.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm animate-right">
+                <img src="{% static 'images/vvvansh.jpg' %}" class="card-img-top rounded-circle profile-pic mx-auto mt-3" alt="Vansh Kaushik">
+                <div class="card-body">
+                    <h3 class="card-title">Vansh Kaushik - Team Member</h3>
+                    <p class="card-text">Automobile lover with technical curiosity. Brings unique insights to our team from CSE-AI at Chitkara.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm animate-right">
+                <img src="{% static 'images/pppratham.jpg' %}" class="card-img-top rounded-circle profile-pic mx-auto mt-3" alt="Pratham">
+                <div class="card-body">
+                    <h3 class="card-title">Pratham - Team Member</h3>
+                    <p class="card-text">Keen learner and coder. Exploring tech and AI while pursuing CSE-AI at Chitkara University.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm animate-right">
+                <img src="{% static 'images/kkkairav.jpg' %}" class="card-img-top rounded-circle profile-pic mx-auto mt-3" alt="Kairav Vermani">
+                <div class="card-body">
+                    <h3 class="card-title">Kairav Vermani - Team Member</h3>
+                    <p class="card-text">NDA aspirant with strong discipline, also exploring CSE-AI to blend defense with innovation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="map" class="container my-5">
+    <h2 class="text-center mb-4">Find Nearby Hospitals</h2> 
+    <div id="hospital-map" style="height: 400px;">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18..."
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy">
+        </iframe>
+    </div>
+</section>
+
+<section id="contact" class="container my-5">
+    <h2 class="text-center mb-4">Contact Us</h2>
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <div class="contact-box">
+                <p><strong>Phone:</strong> +91 98765 43210</p>
+                <p><strong>Email:</strong> support@lifeflow.com</p>
+            </div>
+            <div>
+                <a href="https://facebook.com" class="btn btn-outline-primary mx-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" class="btn btn-outline-info mx-2"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" class="btn btn-outline-danger mx-2"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <form>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" placeholder="Your Name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" placeholder="Your Email">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-control" rows="3" placeholder="Your Message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+<style>
+    /* Layout styling */
+    .reason, .card.animate-right {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: translateX(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    
+    .reason img.icon {
+        width: 60px;
+        margin-right: 15px;
+    }
+    
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+        opacity: 0;
+        transform: translateX(-30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    
+    /* Profile pic hover effect */
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .card:hover .profile-pic {
+        transform: scale(1.1);
+    }
+    
+    /* Keep your existing animation styles */
+    .reason, .card.animate-right {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: translateX(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    
+    
+    /* Animation classes */
+    .show {
+        opacity: 1 !important;
+        transform: translateX(0) !important;
+    }
+    </style>
+    <script>
+    function initMap() {
+        var hospitalLocation = { lat: 30.7055, lng: 76.6900 }; // Neelam Hospital, Punjab
+    
+        var map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: hospitalLocation,
+        });
+    
+        var marker = new google.maps.Marker({
+            position: hospitalLocation,
+            map: map,
+            title: "Neelam Hospital"
+        });
+    
+        var infoWindow = new google.maps.InfoWindow({
+            content: "<h3>Neelam Hospital</h3><p>Mohali, Punjab, India</p>"
+        });
+    
+        marker.addListener("click", function () {
+            infoWindow.open(map, marker);
+        });
+    }
+    </script>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let leftImage = document.querySelector(".animate-left");
+        let rightElements = document.querySelectorAll(".animate-right");
+    
+        function animateOnScroll() {
+            let screenHeight = window.innerHeight;
+    
+            // Left side image animation
+            if (leftImage.getBoundingClientRect().top < screenHeight - 50) {
+                leftImage.classList.add("show");
+            }
+    
+            // Right side icon-text animation
+            rightElements.forEach(element => {
+                if (element.getBoundingClientRect().top < screenHeight - 50) {
+                    element.classList.add("show");
+                }
+            });
+        }
+    
+        // Run once after page load in case elements are already visible
+        setTimeout(animateOnScroll, 500);
+    
+        window.addEventListener("scroll", animateOnScroll);
+    });
+    </script>
+    {% endblock %}
+``` 
